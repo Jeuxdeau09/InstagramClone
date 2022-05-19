@@ -23,8 +23,8 @@ const App = () => {
 const styles = StyleSheet.create({
   post: {paddingTop: 50},
   image: {
-    width: 300,
-    height: 300,
+    width: '100%',
+    height: '100%',
   },
 });
 
