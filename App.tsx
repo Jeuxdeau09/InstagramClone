@@ -1,19 +1,31 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import colors from './src/theme/colors';
 import fonts from './src/theme/fonts';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const App = () => {
   return (
-    // eslint-disable-next-line react-native/no-inline-styles
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={{color: colors.primary, fontSize: fonts.size.xlg}}>
-        Hello World
-        <AntDesign name="left" size={33}/>
-      </Text>
+    <View style={styles.post}>
+      {/*hEADER */}
+      {/*content */}
+      <Image
+        source={{
+          uri: 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg ',
+        }}
+        style={styles.image}
+      />
+
+      {/*footer */}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  post: {paddingTop: 50},
+  image: {
+    width: 300,
+    height: 300,
+  },
+});
 
 export default App;
