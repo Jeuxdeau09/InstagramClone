@@ -61,13 +61,39 @@ const App = () => {
           />
         </View>
 
-        <Text>
+        {/* likes */}
+        <Text style={styles.text}>
           Liked by
-          <Text style={{fontWeight: fonts.weight.bold}}> Kristen </Text> and
-          <Text style={{fontWeight: fonts.weight.bold}}> 527 others </Text>
+          <Text style={styles.bold}> Kristen </Text> and
+          <Text style={styles.bold}> 527 others </Text>
         </Text>
 
         {/* Post description */}
+        <Text style={styles.text}>
+          <Text style={styles.bold}> Yooooo </Text>
+          Jason is here Jason is hereJason is hereJason is hereJason is here
+          Jason is here Jason is here Jason is here Jason is here Jason is here
+          Jason is here
+        </Text>
+
+        {/* Comments */}
+        <Text> View all comments 15</Text>
+        <View style={styles.comment}>
+          <Text style={styles.commentText}>
+            <Text style={styles.bold}> Yooooo </Text>
+            hagjal;gwlieg skdgnaiegsldkglaiheg sil;gaiheg
+          </Text>
+          <AntDesign
+            name={'hearto'}
+            size={14}
+            style={styles.icon}
+            color={colors.black}
+          />
+        </View>
+
+        {/*Posted date */}
+
+        <Text> March 11, 2022</Text>
       </View>
     </View>
   );
@@ -83,12 +109,31 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 
+  commentText: {
+    color: colors.black,
+    flex: 1,
+  },
+
   image: {
     width: '100%',
     height: '70%',
   },
   icon: {marginHorizontal: 5},
   userAvatar: {width: 50, height: 50, borderRadius: 25, marginRight: 10},
+
+  text: {
+    color: colors.black,
+    lineHeight: 16,
+  },
+
+  bold: {
+    fontWeight: fonts.weight.bold,
+  },
+
+  comment: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
 
 export default App;
