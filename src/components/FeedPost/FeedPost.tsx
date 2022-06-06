@@ -7,7 +7,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import Comment from '../Comment';
-import {IPost} from '../../types/models';
+import { IPost } from '../../types/models';
+import 
 
 interface IFeedPost {
   post: IPost;
@@ -69,7 +70,7 @@ const FeedPost = ({post}: IFeedPost) => {
         </Text>
 
         {/* Post description */}
-        <Text style={styles.text}>
+        <Text style={styles.text} numberOfLines={2}>
           <Text style={styles.bold}> {post.user.username} </Text>
           {post.description}
         </Text>
