@@ -2,6 +2,7 @@ import {StyleSheet} from 'react-native';
 import React from 'react';
 import fonts from '../../theme/fonts';
 import colors from '../../theme/colors';
+import Comment from '../Comment';
 
 export default StyleSheet.create({
   post: {},
@@ -11,11 +12,6 @@ export default StyleSheet.create({
   iconContainer: {flexDirection: 'row', marginBottom: 5},
   footer: {
     padding: 10,
-  },
-
-  commentText: {
-    color: colors.black,
-    flex: 1,
   },
 
   image: {
@@ -32,10 +28,5 @@ export default StyleSheet.create({
 
   bold: {
     fontWeight: fonts.weight.bold,
-  },
-
-  comment: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 });
