@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {useState} from 'react';
+import {View, Text, Image, Pressable} from 'react-native';
 import colors from '../../theme/colors';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -7,14 +8,40 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import Comment from '../Comment';
-import { IPost } from '../../types/models';
-import 
+import {IPost} from '../../types/models';
+import DoublePressable from '../DoublePressable';
+import Carousel from '../Carousel';
 
 interface IFeedPost {
   post: IPost;
 }
 
 const FeedPost = ({post}: IFeedPost) => {
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [isLiked, setisLiked] = useState(false);
+
+  const toggleDescriptionExpanded = () => {
+    setIsDescriptionExpanded(v => !v);
+  };
+
+  const toggleLike = () => {
+    setisLiked(v => !v);
+  };
+
+  let content = null;
+  if (post.image) {
+    content = (
+      <Image
+        source={{
+          uri: post.image,
+        }}
+        style={styles.image}
+      />
+    );
+  } else if (post.images) {
+    content = <Carousel images={post.images} />;
+  }
+
   return (
     <View style={styles.post}>
       {/*hEADER */}
@@ -31,17 +58,19 @@ const FeedPost = ({post}: IFeedPost) => {
       </View>
 
       {/*content */}
-      <Image source={{uri: post.image}} style={styles.image} />
+      <DoublePressable onDoublePress={toggleLike}> {content}</DoublePressable>
 
       {/*footer */}
       <View style={styles.footer}>
         <View style={styles.iconContainer}>
-          <AntDesign
-            name={'hearto'}
-            size={24}
-            style={styles.icon}
-            color={colors.black}
-          />
+          <Pressable onPress={toggleLike}>
+            <AntDesign
+              name={isLiked ? 'heart' : 'hearto'}
+              size={24}
+              style={styles.icon}
+              color={isLiked ? colors.accent : colors.black}
+            />
+          </Pressable>
           <Ionicons
             name="chatbubble-outline"
             size={24}
@@ -70,9 +99,13 @@ const FeedPost = ({post}: IFeedPost) => {
         </Text>
 
         {/* Post description */}
-        <Text style={styles.text} numberOfLines={2}>
+        <Text style={styles.text} numberOfLines={isDescriptionExpanded ? 0 : 3}>
           <Text style={styles.bold}> {post.user.username} </Text>
           {post.description}
+        </Text>
+
+        <Text onPress={toggleDescriptionExpanded}>
+          {isDescriptionExpanded ? 'less' : 'more'}
         </Text>
 
         {/* Comments */}
