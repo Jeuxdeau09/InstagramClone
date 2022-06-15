@@ -58,7 +58,7 @@ const FeedPost = ({post}: IFeedPost) => {
       </View>
 
       {/*content */}
-      <DoublePressable onDoublePress={toggleLike}> {content}</DoublePressable>
+      <DoublePressable onDoublePress={toggleLike}>{content}</DoublePressable>
 
       {/*footer */}
       <View style={styles.footer}>
