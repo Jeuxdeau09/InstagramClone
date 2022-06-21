@@ -4,6 +4,7 @@ import {
   Image,
   useWindowDimensions,
   ViewToken,
+  ViewabilityConfig,
 } from 'react-native';
 import {useState, useRef} from 'react';
 import React from 'react';
