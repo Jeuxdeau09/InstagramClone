@@ -6,5 +6,6 @@ const colors = {
   primary: '#405de6',
   accent: '#ed4956',
   border: '#dcdcdc',
+  error: '#ED4956',
 };
 export default colors;

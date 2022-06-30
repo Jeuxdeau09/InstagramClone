@@ -2,23 +2,78 @@ import {View, Text, Image, StyleSheet, TextInput} from 'react-native';
 import React from 'react';
 import user from '../../assets/data/user.json';
 import fonts from '../../theme/fonts';
+import {useForm, Controller} from 'react-hook-form';
 import colors from '../../theme/colors';
+import {IUser} from '../../types/models';
+
+type IEditableUserField = 'name' | 'username' | 'website' | 'bio';
+type IEditableUser = Pick<IUser, IEditableUserField>;
 
 interface ICustomInput {
   label: string;
   multiline?: boolean;
+  control: Control<IEditableUser, object>;
+  name: IEditableUserField;
+  rules: object;
 }
 
-const CustomInput = ({label, multiline = false}: ICustomInput) => (
-  <View style={styles.inputContainer}>
-    <Text style={styles.label}> {label}</Text>
-    <TextInput placeholder={label} style={styles.input} multiline={multiline} />
-  </View>
+const URL_REGEX =
+  /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+
+const CustomInput = ({
+  control,
+  name,
+  label,
+  multiline = false,
+  rules = {},
+}: ICustomInput) => (
+  <Controller
+    control={control}
+    name={name}
+    rules={rules}
+    render={({field: {onChange, value, onBlur}, fieldState: {error}}) => {
+      return (
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>{label}</Text>
+
+          <View style={{flex: 1}}>
+            <TextInput
+              placeholder={label}
+              style={styles.input}
+              multiline={multiline}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              style={[
+                styles.input,
+                {borderColor: error ? colors.error : colors.border},
+              ]}
+            />
+            {error && (
+              <Text style={{color: colors.error}}>
+                {' '}
+                {error.message || 'error'}{' '}
+              </Text>
+            )}
+          </View>
+        </View>
+      );
+    }}
+  />
 );
 
 const EditProfileScreen = () => {
-  const onSubmit = () => {
-    console.warn('submit');
+  const {control, handleSubmit, formState} = useForm<IEditableUser>({
+    defaultValues: {
+      name: user.name,
+      username: user.username,
+      website: user.website,
+      bio: user.bio,
+    },
+  });
+
+  const onSubmit = (data: IEditableUser) => {
+    console.warn(data);
   };
   return (
     <View style={styles.page}>
@@ -26,12 +81,49 @@ const EditProfileScreen = () => {
 
       <Text style={styles.textButton}>Change profile picture </Text>
 
-      <CustomInput label="Name" />
-      <CustomInput label="Username" />
-      <CustomInput label="Website" />
-      <CustomInput label="BIO" multiline />
+      <CustomInput
+        name="Name"
+        label="name"
+        control={control}
+        rules={{required: 'Name is required'}}
+      />
+      <CustomInput
+        name="username"
+        label="username"
+        control={control}
+        rules={{
+          required: 'Username is required',
+          minLength: {
+            value: 3,
+            message: 'username should be more than 3 characters',
+          },
+        }}
+      />
+      <CustomInput
+        name="website"
+        label="website"
+        control={control}
+        rules={{
+          pattern: {
+            value: URL_REGEX,
+            message: 'invalid url',
+          },
+        }}
+      />
+      <CustomInput
+        name="bio"
+        label="bio"
+        multiline
+        control={control}
+        rules={{
+          maxLength: {
+            value: 200,
+            message: 'bio should be less than 200 characters',
+          },
+        }}
+      />
 
-      <Text onPress={onSubmit} style={styles.textButton}>
+      <Text onPress={handleSubmit(onSubmit)} style={styles.textButton}>
         Submit
       </Text>
     </View>
@@ -60,12 +152,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'stretch',
+    paddingVertical: 15,
   },
 
   input: {
-    borderColor: colors.border,
     borderBottomWidth: 1,
-    flex: 1,
+    paddingVertical: 5,
   },
   label: {
     width: 75,
