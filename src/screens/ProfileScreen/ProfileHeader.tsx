@@ -3,8 +3,11 @@ import React from 'react';
 import user from '../../assets/data/user.json';
 import styles from './styles';
 import Button from '../../components/Button';
+import {useNavigation} from '@react-navigation/native';
 
 const ProfileHeader = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.root}>
       <View style={styles.headerRow}>
@@ -39,10 +42,7 @@ const ProfileHeader = () => {
           text=" Edit Profiile "
           onPress={() => console.warn('on edit profile')}
         />
-        <Button
-          text="  Extra Button"
-          onPress={() => console.warn('extra button ')}
-        />
+        <Button text=" Go back " onPress={() => navigation.goBack()} />
       </View>
       {/*Gridview post*/}
     </View>

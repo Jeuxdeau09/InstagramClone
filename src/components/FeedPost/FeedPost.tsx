@@ -12,6 +12,8 @@ import {IPost} from '../../types/models';
 import DoublePressable from '../DoublePressable';
 import Carousel from '../Carousel';
 import VideoPlayer from '../VideoPlayer';
+import {useNavigation} from '@react-navigation/native';
+import Navigation from '../../navigation';
 
 interface IFeedPost {
   post: IPost;
@@ -21,6 +23,14 @@ interface IFeedPost {
 const FeedPost = ({post, isVisible}: IFeedPost) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isLiked, setisLiked] = useState(false);
+
+
+  const navigation = useNavigation(); 
+
+  const navigateToUser = () => {
+    navigation.navigate('UserProfile', {userId: post.user.id});
+  };
+
 
   const toggleDescriptionExpanded = () => {
     setIsDescriptionExpanded(v => !v);
@@ -47,7 +57,7 @@ const FeedPost = ({post, isVisible}: IFeedPost) => {
   } else if (post.video) {
     content = (
       <DoublePressable onDoublePress={toggleLike}>
-        <VideoPlayer uri={post.video} paused = {!isVisible} />
+        <VideoPlayer uri={post.video} paused={!isVisible} />
       </DoublePressable>
     );
   }
@@ -58,7 +68,9 @@ const FeedPost = ({post, isVisible}: IFeedPost) => {
       <View style={styles.header}>
         <Image source={{uri: post.user.image}} style={styles.userAvatar} />
 
-        <Text style={styles.userName}>{post.user.username}</Text>
+        <Text onPress={navigateToUser} style={styles.userName}>
+          {post.user.username}
+        </Text>
 
         <Entypo
           name="dots-three-horizontal"
